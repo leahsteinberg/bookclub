@@ -1,2 +1,5 @@
 secrets
-
+secrets.js
+parseSecrets
+parseSecrets.js
+public/parseSecrets.js
