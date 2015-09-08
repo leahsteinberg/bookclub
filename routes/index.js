@@ -28,7 +28,8 @@ app.get('/search', function(req, res){
 	 client.itemSearch({
 	    keywords: req.query.searchString,
 	    searchIndex: 'Books',
-	    responseGroup: 'ItemAttributes,Images'
+	    responseGroup: 'ItemAttributes,Images',
+	    browseNode: '17'
 	}).then(function(results){
 	    //console.log("success,", results.slice(0, 3));
 	    res.send(JSON.stringify(results.slice(0, 5)))
