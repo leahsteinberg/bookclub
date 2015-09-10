@@ -17,55 +17,15 @@ var SearchInput = React.createClass({
 
 
 var SearchComponent = React.createClass({
-	getInitialState: function(){
-		return {searchString: "",
-			searchBooks: []
-			}
 
-	},
-	// handleSearchChange: function(e){
-	// 	var searchString = e.target.value;
-	// 	this.setState({searchString: searchString});
-	// 	var rComp = this;
-	// 	if (searchString.length < 1){
-	// 		return;
-	// 	}
-	// 	$.ajax({
-	// 				type: "GET",
-	// 				data: {searchString: searchString},
-	// 				url: '/search',
-	// 				dataType: 'json'
-	// 			}).done(function(data) {
-	// 				var searchBooksList = [];
-	// 				for(var i = 0; i < data.length; i++){
-	// 					var bookId = data[i].ASIN[0];
-	// 					var maybeBook = _.select(rComp.props.possBooks, function(book){ return book.attributes.bookId === bookId;})[0];
-	// 					if (maybeBook){
-	// 						searchBooksList.push(maybeBook)
-	// 					} else {
-	// 						var book = createNewBook("funClub",
-	// 												data[i].ItemAttributes[0].Title[0],
-	// 												data[i].ItemAttributes[0].Author[0],
-	// 												data[i].ASIN[0],
-	// 												data[i].SmallImage[0].URL[0],
-	// 												data[i].SmallImage[0].Height[0]["_"],
-	// 												data[i].SmallImage[0].Width[0]["_"],
-	// 												[]);
-	// 						searchBooksList.push(book);
-	// 					}
-	// 				}
-	// 				rComp.setState({searchBooks: searchBooksList})
-
-	// 			});
-
-	// },
+	
 	render: function(){
 		var that = this;
-		var booksFound = this.state.searchBooks.map(function(book){
+		var booksFound = this.props.searchBooks.map(function(book){
 			return (<div><BasicBookComp bookInfo={book} onVote={that.props.onVote} bookVotes={that.props.bookVotes}/></div>);
 
 		});
-		return (<div><SearchInput  onChange={this.handleSearchChange}/>{booksFound}</div>)
+		return (<div><SearchInput  onChange={this.props.handleSearchChange}/>{booksFound}</div>)
 	}
 });
 
@@ -107,9 +67,18 @@ var BasicBookComp = React.createClass({
 
 var PotentialBooksList = React.createClass({
 	render: function(){
+
+		var that = this;
 		var booksList = this.props.possBooks.map(function(book){
-			return (<div> <BasicBookComp> bookInfo={book} </div>);
+				if (that.props.searchAndPoss[book.attributes.bookId]){
+			return (<div  style={possBooksSearchStyle}> <BasicBookComp bookInfo={book} onVote={that.props.onVote} bookVotes={that.props.bookVotes}/> </div>);
+
+				} else {
+
+			return (<div  style={possBooksStyle}> <BasicBookComp bookInfo={book} onVote={that.props.onVote} bookVotes={that.props.bookVotes}/> </div>);
+		}
 		});
+		return (<div>{booksList}</div>)
 		
 	}
 });
@@ -121,14 +90,15 @@ var BooksMenu = React.createClass({
 			clubName: "funClub",
 			club: undefined,
 			possBooks: [],
-			bookVotes: {}
-			
+			searchBooks: [],
+			bookVotes: {},
+			searchAndPoss: {}
 		}
 
 	},
 	render: function(){
-		return (<div> <SearchComponent clubName={this.state.clubName} possBooks={this.state.possBooks} onVote={this.onVote} bookVotes={this.state.bookVotes}/> 
-				<PotentialBooksList possBooks={this.state.possBooks} />
+		return (<div> <SearchComponent clubName={this.state.clubName} possBooks={this.state.possBooks} onVote={this.onVote} bookVotes={this.state.bookVotes} handleSearchChange={this.handleSearchChange} searchBooks={this.state.searchBooks}/> 
+				<PotentialBooksList possBooks={this.state.possBooks} onVote={this.onVote} bookVotes={this.state.bookVotes} searchAndPoss={this.state.searchAndPoss}/>
 			</div>);
 	},
 	componentDidMount: function(){
@@ -145,6 +115,7 @@ var BooksMenu = React.createClass({
 		bookQuery.equalTo("clubName", "funClub");
 		bookQuery.find({
 			success: function(bresults){
+				console.log(bresults);
 				// var possArray = [];
 				// for (var i =0; i< bresults.length; i++){
 				// 	if (bresults[i].attributes.votes && bresults[i].attributes.votes.length > 0){
@@ -166,6 +137,52 @@ var BooksMenu = React.createClass({
 				console.log("Error: " + error.code + " " + error.message);
 			}
 		});
+	},
+
+	handleSearchChange: function(e){
+		var searchString = e.target.value;
+		console.log("handle search", searchString);
+		this.setState({searchString: searchString});
+		var rComp = this;
+		if (searchString.length < 1){
+			rComp.setState({searchBooks: []});
+			rComp.setState({searchAndPoss: {}});
+		}
+		$.ajax({
+			type: "GET",
+			data: {searchString: searchString},
+			url: '/search',
+			dataType: 'json'
+		}).done(function(data) {
+			var searchBooksList = [];
+			var topPoss = {};
+			for(var i = 0; i < data.length; i++){
+				var bookId = data[i].ASIN[0];
+				var maybeBook = _.select(rComp.state.possBooks, function(book){ return book.attributes.bookId === bookId;})[0];
+				if (maybeBook){ // we already have the book.
+					topPoss[maybeBook.attributes.bookId]= true;
+				} else {
+					var book = createNewBook("funClub",
+								data[i].ItemAttributes[0].Title[0],
+								data[i].ItemAttributes[0].Author[0],
+								data[i].ASIN[0],
+								data[i].SmallImage[0].URL[0],
+								data[i].SmallImage[0].Height[0]["_"],
+								data[i].SmallImage[0].Width[0]["_"],
+								[]);
+					searchBooksList.push(book);
+				}
+			}
+			rComp.setState({searchBooks: searchBooksList});
+			rComp.setState({searchAndPoss: topPoss});
+
+			//if (topPossList){
+				var newi = searchAtTopOfPossBooks(rComp.state.possBooks, topPoss);
+				rComp.setState({possBooks: newi});
+			//}
+
+		});
+
 	},
 	onVote: function(bookId, bookInfo){
 		var oldVotes = this.state.bookVotes[bookId] === undefined ? [] : this.state.bookVotes[bookId];

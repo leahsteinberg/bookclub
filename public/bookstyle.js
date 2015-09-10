@@ -1,3 +1,10 @@
+var possBooksSearchStyle = {
+	backgroundColor: "#4f4f4f"
+}
+
+var possBooksStyle = {
+	backgroundColor: "#cccccc"
+}
 var basicBookBoxStyle = {
 	paddingBottom: "10px",
 	maginTop: "5px",

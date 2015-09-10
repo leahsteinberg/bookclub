@@ -21,6 +21,14 @@
 
 // }
 
+var searchAtTopOfPossBooks = function(poss, search){
+	var inSearch = function(book){
+		return search[book.attributes.bookId];
+	}
+	var twoArrays = _.partition(poss, inSearch);
+	return twoArrays[0].concat(twoArrays[1]);
+}
+
 var createNewBook = function(clubName, title, author, bookId, picUrl, height, width, votes){
 	var book = new Book();
 	book.set("clubName", clubName);
