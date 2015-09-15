@@ -44,6 +44,26 @@ var createNewBook = function(clubName, title, author, bookId, picUrl, height, wi
 }
 
 
+var updateBookStoreAfterVote = function(that, newVotes, bookInfo){
+	var addOn = {}
+	var bookId = bookInfo.attributes.bookId;
+	console.log("book info", bookInfo);
+	addOn[bookId] = newVotes;
+	var newBookVotes = _.extend(that.state.bookVotes, addOn);
+	that.setState(newBookVotes);
+	bookInfo.set("votes", newVotes);
+	bookInfo.save();
+	if (newVotes.length === 0){
+			that.setState({possBooks: _.select(that.state.possBooks, function(book){ return book.attributes.bookId != bookId;}) })
+			bookInfo.destroy();
+	}else if (newVotes.length === 1){
+				// add to possBooks
+			that.setState({possBooks: [bookInfo].concat(that.state.possBooks)});
+				// remove from search Books
+			that.setState({searchBooks: _.select(that.state.searchBooks, function(book){ return book.attributes.bookId != bookId;}) })
+	}
+}
+
 
 var createNewBookFromInfo = function(bookInfo){
 	var info = bookInfo.attributes;
@@ -52,30 +72,30 @@ var createNewBookFromInfo = function(bookInfo){
 }
 
 
-var updateVotesOnParse = function(newVotes){
-	return function(bookObj, bookInfo){
-		if (bookObj === undefined){
-			bookObj = bookInfo;
+// var updateVotesOnParse = function(newVotes){ // deprecated I think
+// 	return function(bookObj, bookInfo){
+// 		if (bookObj === undefined){
+// 			bookObj = bookInfo;
 
-		} else {
-			bookObj.set("votes", newVotes);
-		}
-		bookObj.save();
-	}
-}
-
-
-var getBookFromParseAndUpdate = function(bookInfo, callback){
-	var bookQuery = new Parse.Query(Book);
-	bookQuery.equalTo("bookId", bookId);
-	bookQuery.first({
-		success: function(bresults){
-			callback(bresults, bookInfo);
-		},
-		error: function(error){
-		console.log("Error: " + error.code + " " + error.message);
-		}
-	});
+// 		} else {
+// 			bookObj.set("votes", newVotes);
+// 		}
+// 		bookObj.save();
+// 	}
+// }
 
 
-}
+// var getBookFromParseAndUpdate = function(bookInfo, callback){
+// 	var bookQuery = new Parse.Query(Book);
+// 	bookQuery.equalTo("bookId", bookId);
+// 	bookQuery.first({
+// 		success: function(bresults){
+// 			callback(bresults, bookInfo);
+// 		},
+// 		error: function(error){
+// 		console.log("Error: " + error.code + " " + error.message);
+// 		}
+// 	});
+
+
+// }

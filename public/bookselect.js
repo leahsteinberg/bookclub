@@ -50,20 +50,15 @@ var BasicBookComp = React.createClass({
 		var bookId = this.props.bookInfo.attributes.bookId;
 		var votesList = this.props.bookVotes[bookId];
 		return (<div style={basicBookBoxStyle}> 
-			<img src={this.props.bookInfo.attributes.picUrl}> </img>
-			<span style={bookTitleStyle}>{this.props.bookInfo.attributes.title}</span>
-			<div style={bookAuthorStyle}>{this.props.bookInfo.attributes.author}
-			<VoteButton votes={votesList} onVote={this.props.onVote.bind(this, bookId, this.props.bookInfo)}/></div>
+			<span><img src={this.props.bookInfo.attributes.picUrl}> </img></span>
+			<span style={bookTitleStyle}> {this.props.bookInfo.attributes.title}
+			<div style={bookAuthorStyle}> {this.props.bookInfo.attributes.author}
+			<VoteButton votes={votesList} onVote={this.props.onVote.bind(this, bookId, this.props.bookInfo)}/></div></span>
 			</div>);
 	}
 });
 
 
-// var booksFound = this.state.searchBooks.map(function(book){
-// 			return (<div><BasicBookComp bookInfo={book} onVote={that.props.onVote} bookVotes={that.props.bookVotes}/></div>);
-
-// 		});
-// 		return (<div><SearchInput  onChange={this.handleSearchChange}/>{booksFound}</div>)
 
 var PotentialBooksList = React.createClass({
 	render: function(){
@@ -116,12 +111,6 @@ var BooksMenu = React.createClass({
 		bookQuery.find({
 			success: function(bresults){
 				console.log(bresults);
-				// var possArray = [];
-				// for (var i =0; i< bresults.length; i++){
-				// 	if (bresults[i].attributes.votes && bresults[i].attributes.votes.length > 0){
-				// 		possArray.push(bresults[i]);
-				// 	}
-				// }
 				rComponent.setState({possBooks: bresults});
 				var votes = {};
 				for(var i=0; i< bresults.length; i++){
@@ -192,33 +181,7 @@ var BooksMenu = React.createClass({
 		} else {
 			newVotes.push(userId);
 		}
-		var addOn = {}
-		addOn[bookId] = newVotes;
-		var newBookVotes = _.extend(this.state.bookVotes, addOn);
-		this.setState(newBookVotes);
-		bookInfo.set("votes", newVotes);
-		bookInfo.save();
-		 if (newVotes.length === 0){
-		 	this.setState({possBooks: _.without(this.state.possBooks, _.findWhere(this.state.possBooks, {bookId: bookId}))});
-			bookInfo.destroy();
-			console.log("destroying");
-		} 
-		else if (newVotes.length === 1){
-		}
-		else {
-
-		}
-		// 	console.log("saving");
-		// 	bookAtt = bookInfo.attributes;
-		// 	// var newBookInfo = createNewBook(this.state.clubName, bookAtt.title, bookAtt.author, bookAtt.bookId, bookAtt.picUrl, bookAtt.height, bookAtt.width, newVotes);
-		// 	// bookInfo.save({success: function(){
-
-		// 	// },
-		// 	// error: function(er){
-		// 	// 	var newBookInfo = createNewBook(this.state.clubName, bookAtt.title, bookAtt.author, bookAtt.bookId, bookAtt.picUrl, bookAtt.height, bookAtt.width, newVotes);
-		// 	// 	newBookInfo.save();
-		// 	// }});
-		// }
+		updateBookStoreAfterVote(this, newVotes, bookInfo);
 	}
 });
 
