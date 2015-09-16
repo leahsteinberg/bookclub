@@ -61,6 +61,12 @@
   
 </script>
         <script type="text/jsx">
+
+  var bringToHomePage = function(){
+          React.render(
+        <div><EntryMenu/></div>, document.getElementById("anchor"));
+  }
+
     var currentUser = Parse.User.current();
     if (currentUser){
 
@@ -69,8 +75,7 @@
         </div>, document.getElementById("anchor"));
     } else {
       console.log('no user!!!');
-      React.render(
-        <div><EntryMenu/></div>, document.getElementById("anchor"));
+    bringToHomePage();
 
       
     }

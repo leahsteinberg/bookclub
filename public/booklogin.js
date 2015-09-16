@@ -61,6 +61,7 @@ var EntryMenu = React.createClass({
 			if (this.state.logInType === "logIn"){
 			inputsAndButtons = (<div>
 				{email}
+				{userName}
 				<button onClick={this.onLogIn}>Log In </button>
 				</div>);
 			}	
@@ -104,15 +105,22 @@ var EntryMenu = React.createClass({
 		this.setState({clubName: clubString});
 
 	},
+	onUsernameChange: function(e){
+		e.preventDefault();
+		var usernameString = e.target.value;
+		this.setState({username: usernameString});
+	},
 	onNewClubSubmit: function(e){
 		var Club = Parse.Object.extend("Club");
 		var query = new Parse.Query(Club);
+		var that = this;
 		query.equalTo("clubName", this.state.clubName);
 		query.first({
   			success: function(object) {
   				console.log("we got back", object);
   				if (object === undefined){
-  					this.makeClub()
+  					that.makeClub()
+  					that.signUpUser();
   				} else {
   					
   				}
@@ -129,11 +137,22 @@ var EntryMenu = React.createClass({
 		
 	},
 	onLogInSubmit: function(e){
+		e.preventDefault();
+		Parse.User.logIn(this.state.username, this.state.password, {
+  			success: function(user) {
+  				console.log('signed in', user);
+    		// Do stuff after successful login.
+  			},
+  error: function(user, error) {
+  	alert("did not log in!");
+    
+    // The login failed. Check error to see why.
+  }
+});
 
 
 	},
 	signUpUser: function(){
-		//e.preventDefault();
 		console.log("submitted!");
 		var user = new Parse.User();
 		user.set("password", this.state.password);
@@ -143,6 +162,7 @@ var EntryMenu = React.createClass({
 		user.signUp(null, {
  		success: function(user) {
   			console.log("we have signed up", user);
+  			bringToHomePage();
 
   		},
   		error: function(user, error) {
@@ -156,6 +176,7 @@ var EntryMenu = React.createClass({
 		var Club = Parse.Object.extend("Club");
 		var club = new Club();
 		club.set("clubName", this.state.clubName);
+		club.save();
 	}
 });
 
