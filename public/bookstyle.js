@@ -34,5 +34,13 @@ var heartStyle = {
 	leftMargin: "10px"
 }
 
+var searchBarStyle = {
+	position: "fixed"
+}
+
+var searchCompStyle = {
+	topPadding: "60px"
+}
+
 
 

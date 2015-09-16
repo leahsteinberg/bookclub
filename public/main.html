@@ -48,16 +48,34 @@
   </head>
   <body>
     <div id="anchor"></div>
-     <!-- <script type="text/jsx" src="../public/paragraphs.js" -->
   <script> 
     Parse.initialize(parseSecret1, parseSecret2);    
 
   </script>
+
   <script type=text/javascript src="../public/bookmodel.js"></script>
     <script type=text/javascript src="../public/bookstyle.js"></script>
 <script type=text/javascript src="../public/bookmodelupdate.js"></script>
-    <script type="text/jsx" src="../public/bookselect.js"></script >
+   <script type="text/jsx" src="../public/booklogin.js"></script> 
+  <script type="text/jsx" src="../public/bookselect.js"></script >
+  
+</script>
+        <script type="text/jsx">
+    var currentUser = Parse.User.current();
+    if (currentUser){
+
+    React.render(<div>
+        <BooksMenu/>
+        </div>, document.getElementById("anchor"));
+    } else {
+      console.log('no user!!!');
+      React.render(
+        <div><EntryMenu/></div>, document.getElementById("anchor"));
+
       
-    </script>
+    }
+
+  </script>
+
   </body>
 </html>

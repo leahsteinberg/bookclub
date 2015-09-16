@@ -7,9 +7,9 @@ var SearchInput = React.createClass({
 	}, 
 	render: function(){
 
-	return (<div>
+	return (<div style={searchBarStyle}>
 		<form> 
-		<input type ="text"  onChange={this.props.onChange} value={this.props.filter_text}> </input>
+		<input  type ="text"  onChange={this.props.onChange} value={this.props.filter_text}> </input>
 		</form>
 		</div>);
 	}
@@ -17,8 +17,6 @@ var SearchInput = React.createClass({
 
 
 var SearchComponent = React.createClass({
-
-	
 	render: function(){
 		var that = this;
 		var booksFound = this.props.searchBooks.map(function(book){
@@ -92,7 +90,8 @@ var BooksMenu = React.createClass({
 
 	},
 	render: function(){
-		return (<div> <SearchComponent clubName={this.state.clubName} possBooks={this.state.possBooks} onVote={this.onVote} bookVotes={this.state.bookVotes} handleSearchChange={this.handleSearchChange} searchBooks={this.state.searchBooks}/> 
+
+		return (<div> <SearchComponent style={searchCompStyle}clubName={this.state.clubName} possBooks={this.state.possBooks} onVote={this.onVote} bookVotes={this.state.bookVotes} handleSearchChange={this.handleSearchChange} searchBooks={this.state.searchBooks}/> 
 				<PotentialBooksList possBooks={this.state.possBooks} onVote={this.onVote} bookVotes={this.state.bookVotes} searchAndPoss={this.state.searchAndPoss}/>
 			</div>);
 	},
@@ -136,6 +135,7 @@ var BooksMenu = React.createClass({
 		if (searchString.length < 1){
 			rComp.setState({searchBooks: []});
 			rComp.setState({searchAndPoss: {}});
+			return;
 		}
 		$.ajax({
 			type: "GET",
@@ -164,12 +164,7 @@ var BooksMenu = React.createClass({
 			}
 			rComp.setState({searchBooks: searchBooksList});
 			rComp.setState({searchAndPoss: topPoss});
-
-			//if (topPossList){
-				var newi = searchAtTopOfPossBooks(rComp.state.possBooks, topPoss);
-				rComp.setState({possBooks: newi});
-			//}
-
+			rComp.setState({possBooks: searchAtTopOfPossBooks(rComp.state.possBooks, topPoss)});
 		});
 
 	},
@@ -185,12 +180,3 @@ var BooksMenu = React.createClass({
 	}
 });
 
-
-
-
-React.render(
-	<div>
-	<BooksMenu/>
-        </div>,
-        document.getElementById("anchor")
-      );
