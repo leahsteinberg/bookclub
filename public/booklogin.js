@@ -13,21 +13,6 @@ var EmailLogin = React.createClass({
 	},
 	
 	onSignUp: function(e){
-		e.preventDefault();
-		console.log("submitted!");
-		var user = new Parse.User();
-		user.set("password", this.state.password);
-		user.set("email", this.state.email);
-		user.signUp(null, {
- 		success: function(user) {
-  			console.log("we have signed up", user);
-
-  		},
-  		error: function(user, error) {
-    		// Show the error message somewhere and let the user try again.
-    	alert("Error: " + error.code + " " + error.message);
-  		}
-		});
 
 	},
 	onLogin: function(e){
@@ -53,18 +38,11 @@ var LogInType = React.createClass({
 		return (<div>
 			<span style={logInStyle} onClick={this.props.changeLogInType.bind(this, "logIn")}> LogIn </span> 
 			<span style={newClubStyle} onClick={this.props.changeLogInType.bind(this, "newClub")}> Make A New Club </span>
-			<span style={joinClubStyle} onClick={this.props.changeLogInType.bind(this, "joinClub")}> Join A Club </span>
+			<span style={joinClubStyle} onClick={this.props.changeLogInType.bind(this, "joinClub")}> Sign Up and Join A Club </span>
 			</div>)
 	}
 
 });
-
-// var NewClub = React.createClass({
-// 	render: function() {
-
-// 	}
-// });
-
 
 var EntryMenu = React.createClass({
 	getInitialState: function(){
@@ -99,7 +77,7 @@ var EntryMenu = React.createClass({
 					<div> 
 					{email}
 					{userName}
-					<button onClick={this.onJoinClubSubmit}>Check For Club Invitations </button>
+					<button onClick={this.onJoinClubSubmit}>Sign Up and Check For Club Invitations </button>
 					</div>
 					);
 			}
@@ -111,9 +89,6 @@ var EntryMenu = React.createClass({
 	},
 	changeLogInType: function(type){
 		this.setState({logInType: type});
-		if (type != "newClub"){
-			this.setState({clubName: ""});
-		}
 	},
 	onEmailChange: function(e){
 		var emailString = e.target.value;
@@ -125,16 +100,62 @@ var EntryMenu = React.createClass({
 		this.setState({password: passwordString});
 	},
 	onClubNameChange: function(e){
+		var clubString = e.target.value;
+		this.setState({clubName: clubString});
 
 	},
 	onNewClubSubmit: function(e){
+		var Club = Parse.Object.extend("Club");
+		var query = new Parse.Query(Club);
+		query.equalTo("clubName", this.state.clubName);
+		query.first({
+  			success: function(object) {
+  				console.log("we got back", object);
+  				if (object === undefined){
+  					this.makeClub()
+  				} else {
+  					
+  				}
+   				 // Successfully retrieved the object.
+ 			 },
+  			error: function(error) {
+    			alert("Error: " + error.code + " " + error.message);
+  				}
+		});
+	
 
 	},
 	onJoinClubSubmit: function(e){
-
+		
 	},
 	onLogInSubmit: function(e){
 
+
+	},
+	signUpUser: function(){
+		//e.preventDefault();
+		console.log("submitted!");
+		var user = new Parse.User();
+		user.set("password", this.state.password);
+		user.set("email", this.state.email);
+		user.set("username", this.state.username);
+		user.set("clubName", this.state.clubName);
+		user.signUp(null, {
+ 		success: function(user) {
+  			console.log("we have signed up", user);
+
+  		},
+  		error: function(user, error) {
+    		// Show the error message somewhere and let the user try again.
+    	alert("Error: " + error.code + " " + error.message);
+  		}
+		});
+
+	},
+	makeClub: function(){
+		var Club = Parse.Object.extend("Club");
+		var club = new Club();
+		club.set("clubName", this.state.clubName);
 	}
 });
 

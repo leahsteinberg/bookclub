@@ -103,7 +103,7 @@ var BooksMenu = React.createClass({
 			success: function(results){
 				rComponent.setState({club: results[0]});
 			}
-		})
+		});
 
 		var bookQuery = new Parse.Query(Book);
 		bookQuery.equalTo("clubName", "funClub");
