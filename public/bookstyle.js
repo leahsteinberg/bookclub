@@ -1,6 +1,17 @@
+var booksWrapperStyle = {
+	// position: "relative"
+}
+
+var potentialBooksStyle = {
+	position: "absolute",
+	leftMargin: "100px",
+	width: "400px"
+}
+
 var possBooksSearchStyle = {
 	backgroundColor: "#4f4f4f"
 }
+
 
 var possBooksStyle = {
 	backgroundColor: "#cccccc"
@@ -8,7 +19,7 @@ var possBooksStyle = {
 var basicBookBoxStyle = {
 	paddingBottom: "10px",
 	maginTop: "5px",
-	width: "40%",
+	width: "300px",
 	borderStyle: "solid",
 	borderWidth: "2px",	
 	fontFamily: "Playfair Display",
@@ -39,7 +50,8 @@ var searchBarStyle = {
 }
 
 var searchCompStyle = {
-	topPadding: "60px"
+	//topPadding: "60px"
+	// "float": "left"
 }
 
 

@@ -45,12 +45,12 @@ var createNewBook = function(clubName, title, author, bookId, picUrl, height, wi
 
 
 var updateBookStoreAfterVote = function(that, newVotes, bookInfo){
-	var addOn = {}
+	// var addOn = {}
 	var bookId = bookInfo.attributes.bookId;
-	console.log("book info", bookInfo);
-	addOn[bookId] = newVotes;
-	var newBookVotes = _.extend(that.state.bookVotes, addOn);
-	that.setState(newBookVotes);
+	// addOn[bookId] = newVotes;
+	// var newBookVotes = _.extend(that.state.bookVotes, addOn);
+	// that.setState(newBookVotes);
+
 	bookInfo.set("votes", newVotes);
 	bookInfo.save();
 	if (newVotes.length === 0){

@@ -19,7 +19,7 @@ var SearchComponent = React.createClass({
 	render: function(){
 		var that = this;
 		var booksFound = this.props.searchBooks.map(function(book){
-			return (<div><BasicBookComp bookInfo={book} onVote={that.props.onVote} bookVotes={that.props.bookVotes}/></div>);
+			return (<div><BasicBookComp bookInfo={book} onVote={that.props.onVote} /></div>);
 
 		});
 		return (<div><SearchInput  onChange={this.props.handleSearchChange}/>{booksFound}</div>)
@@ -29,7 +29,6 @@ var SearchComponent = React.createClass({
 var VoteButton = React.createClass({
 	render: function(){
 		var heartPic = "../public/blackheart.png";
-		//var numberVotes = this.props.votes === undefined ? 0 : this.props.votes.length;
 		var cleanVotes = this.props.votes === undefined ? [] : this.props.votes;
 	if(cleanVotes.indexOf(this.props.username) != -1){
 		heartPic = "../public/redheart.png";
@@ -45,7 +44,7 @@ var VoteButton = React.createClass({
 var BasicBookComp = React.createClass({
 	render: function(){
 		var bookId = this.props.bookInfo.attributes.bookId;
-		var votesList = this.props.votes[bookId];
+		var votesList = this.props.bookInfo.attributes.votes;// from search its bookVotes, but from potential its votes
 		return (<div style={basicBookBoxStyle}> 
 			<span><img src={this.props.bookInfo.attributes.picUrl}> </img></span>
 			<span style={bookTitleStyle}> {this.props.bookInfo.attributes.title}
@@ -58,7 +57,7 @@ var BasicBookComp = React.createClass({
 var PossibleBookComp = React.createClass({
 	render: function(){
 		return (<div><BasicBookComp bookInfo={this.props.bookInfo} onVote={this.props.onVote}
-			votes={this.props.bookVotes} username={this.props.username} style={this.props.style} /></div>);
+			 username={this.props.username} style={this.props.style} /></div>);
 	}
 })
 
@@ -68,9 +67,9 @@ var PotentialBooksList = React.createClass({
 		var that = this;
 		var booksList = this.props.possBooks.map(function(book){
 				if (that.props.searchAndPoss[book.attributes.bookId]){
-			return (<div  style={possBooksSearchStyle}> <PossibleBookComp bookInfo={book} onVote={that.props.onVote} votes={that.props.bookVotes} username={that.props.username}/> </div>);
+			return (<div  style={possBooksSearchStyle}> <PossibleBookComp bookInfo={book} onVote={that.props.onVote} username={that.props.username}/> </div>);
 				} else {
-			return (<div  style={possBooksStyle}> <PossibleBookComp bookInfo={book} onVote={that.props.onVote} votes={that.props.bookVotes} username={that.props.username}/> </div>);
+			return (<div  style={possBooksStyle}> <PossibleBookComp bookInfo={book} onVote={that.props.onVote} username={that.props.username}/> </div>);
 		}
 		});
 		return (<div>{booksList}</div>)
@@ -86,7 +85,6 @@ var BooksMenu = React.createClass({
 			club: undefined,
 			possBooks: [],
 			searchBooks: [],
-			bookVotes: {},
 			searchAndPoss: {},
 			username: ""
 		}
@@ -94,8 +92,10 @@ var BooksMenu = React.createClass({
 	},
 	render: function(){
 
-		return (<div> <SearchComponent style={searchCompStyle}clubName={this.state.clubName} possBooks={this.state.possBooks} onVote={this.onVote} bookVotes={this.state.bookVotes} handleSearchChange={this.handleSearchChange} searchBooks={this.state.searchBooks}/> 
-				<PotentialBooksList possBooks={this.state.possBooks} onVote={this.onVote} bookVotes={this.state.bookVotes} searchAndPoss={this.state.searchAndPoss} username={this.state.username}/>
+		return (<div> <SearchComponent style={searchCompStyle}clubName={this.state.clubName} possBooks={this.state.possBooks} onVote={this.onVote} 
+			handleSearchChange={this.handleSearchChange} searchBooks={this.state.searchBooks}/> 
+				<div style={booksWrapperStyle}><PotentialBooksList style={potentialBooksStyle} possBooks={this.state.possBooks} onVote={this.onVote} searchAndPoss={this.state.searchAndPoss} username={this.state.username}/>
+			</div>
 			</div>);
 	},
 	componentWillMount:function(){
@@ -120,14 +120,6 @@ var BooksMenu = React.createClass({
 			success: function(bresults){
 				console.log(bresults);
 				rComponent.setState({possBooks: bresults});
-				var votes = {};
-				for(var i=0; i< bresults.length; i++){
-					var bookInfo = bresults[i].attributes;
-					if (bookInfo.votes != undefined && bookInfo.votes.length){
-						votes[bookInfo.bookId] = bookInfo.votes;
-					}
-				}
-				rComponent.setState({bookVotes: votes});
 			},
 			error: function(error){
 				console.log("Error: " + error.code + " " + error.message);
@@ -157,10 +149,7 @@ var BooksMenu = React.createClass({
 				if (maybeBook){ // we already have the book.
 					topPoss[maybeBook.attributes.bookId]= true;
 				} else {
-					console.log("data[i]", data[i]);
 					if (data[i].ItemAttributes != undefined && data[i].ItemAttributes.length && data[i].ItemAttributes[0].Author){
-				
-
 					var book = createNewBook(rComp.state.currentUser.attributes.clubName,
 								data[i].ItemAttributes[0].Title[0],
 								data[i].ItemAttributes[0].Author[0],
@@ -178,7 +167,7 @@ var BooksMenu = React.createClass({
 
 	},
 	onVote: function(bookId, bookInfo){
-		var oldVotes = this.state.bookVotes[bookId] === undefined ? [] : this.state.bookVotes[bookId];
+		var oldVotes = bookInfo.attributes.votes === undefined ? [] : bookInfo.attributes.votes;
 		var newVotes = []
 		if (_.indexOf(oldVotes, this.state.username) >=0){
 			newVotes = _.without(oldVotes, this.state.username);
