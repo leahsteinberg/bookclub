@@ -72,7 +72,7 @@ var PotentialBooksList = React.createClass({
 			return (<div  style={possBooksStyle}> <PossibleBookComp bookInfo={book} onVote={that.props.onVote} username={that.props.username}/> </div>);
 		}
 		});
-		return (<div>{booksList}</div>)
+		return (<div style={potentialBooksStyle} >{booksList}</div>)
 		
 	}
 });
@@ -92,10 +92,10 @@ var BooksMenu = React.createClass({
 	},
 	render: function(){
 
-		return (<div> <SearchComponent style={searchCompStyle}clubName={this.state.clubName} possBooks={this.state.possBooks} onVote={this.onVote} 
+		return (<div style={booksWrapperStyle}><SearchComponent style={searchCompStyle}clubName={this.state.clubName} possBooks={this.state.possBooks} onVote={this.onVote} 
 			handleSearchChange={this.handleSearchChange} searchBooks={this.state.searchBooks}/> 
-				<div style={booksWrapperStyle}><PotentialBooksList style={potentialBooksStyle} possBooks={this.state.possBooks} onVote={this.onVote} searchAndPoss={this.state.searchAndPoss} username={this.state.username}/>
-			</div>
+				<PotentialBooksList possBooks={this.state.possBooks} onVote={this.onVote} searchAndPoss={this.state.searchAndPoss} username={this.state.username}/>
+			
 			</div>);
 	},
 	componentWillMount:function(){

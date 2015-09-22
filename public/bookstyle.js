@@ -1,10 +1,11 @@
 var booksWrapperStyle = {
-	// position: "relative"
+	position: "relative"
 }
 
 var potentialBooksStyle = {
 	position: "absolute",
-	leftMargin: "100px",
+	right: "0",
+	top: "0",
 	width: "400px"
 }
 
@@ -50,6 +51,8 @@ var searchBarStyle = {
 }
 
 var searchCompStyle = {
+	position: "absolute"
+	
 	//topPadding: "60px"
 	// "float": "left"
 }

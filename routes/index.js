@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
 var secrets = require('../secrets.js');
-
+console.log("secrets", secrets);
 var path = require('path');
 var amazon = require('amazon-product-api');
 var client = amazon.createClient({
@@ -9,7 +9,7 @@ var client = amazon.createClient({
     awsSecret: secrets.awsSecret,
     awsTag: secrets.awsAssociateTag
   });
-
+console.log(secrets.awsId, secrets.awsSecret, secrets.awsAssociateTag);
 
 var server = app.listen(4004, function() {
 	var host = server.address().address;

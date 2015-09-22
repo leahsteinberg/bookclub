@@ -21,10 +21,6 @@ var EmailLogin = React.createClass({
 	}
 });
 
-//usernameLogin
-// emailLogin
-// clubName
-//
 var LogInType = React.createClass({
 	render: function(){
 		var logInStyle = newClubStyle = joinClubStyle = {};
