@@ -55,6 +55,7 @@ var updateBookStoreAfterVote = function(that, newVotes, bookInfo){
 	bookInfo.save();
 	if (newVotes.length === 0){
 			that.setState({possBooks: _.select(that.state.possBooks, function(book){ return book.attributes.bookId != bookId;}) })
+			console.log("removing", bookInfo);
 			bookInfo.destroy();
 	}else if (newVotes.length === 1){
 				// add to possBooks

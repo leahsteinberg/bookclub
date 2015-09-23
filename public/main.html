@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-  <script src="../public/react.min.js"></script>
+  <script src="https://fb.me/react-with-addons-0.13.3.js"></script>
+  <!--<script src="../public/react.min.js"></script>-->
   <script src="../public/JSXTransformer.js"></script>
   <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.5.0.min.js"></script>
   <script src="../public/underscore.js"></script>
@@ -12,38 +13,25 @@
   <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Playfair+Display' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Arvo' rel='stylesheet' type='text/css'>
-  <style>
+<style>
+.possBooks-enter {
+  opacity: 0.01;
+}
 
-    .quoteWrapper {
-      text-align: center;
-        border-color: #ce758b;
-        border-width: 2px;
-    }
-    .quote {
-        font-family: 'Halant', sans-serif;
-        font-size: 20px;
-        border-style: solid;
-        color: black;
-        border-color: #BC8F8F;
-        border-width: 2px;
-        padding-left: 40px;
-        padding-right: 40px;
-        padding-top: 20px;
-        padding-bottom: 20px;
-        display: inline-block;
-        margin-left: 40px;
-        margin-right: 40px;
-        margin-top: 40px;
-        margin-bottom: 40px;
-    }
-    .para {
-      font-family: PlayFair Display;
-      font-size: 24px;
-      color: grey;
-      margin-left: 100px;
-      margin-right: 100px;
-    }
-  </style>
+.possBooks-enter.possBooks-enter-active {
+  opacity: 1;
+  transition: opacity 3s ease-in;
+}
+.possBooks-leave {
+  opacity: 1;
+}
+
+.possBooks-leave.possBooks-leave-active {
+  opacity: 0.01;
+  transition: opacity .5s ease-in;
+}
+
+</style>
 
   </head>
   <body>
@@ -61,7 +49,7 @@
   
 </script>
         <script type="text/jsx">
-
+    var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
   var bringToHomePage = function(){
           React.render(
         <div><EntryMenu/></div>, document.getElementById("anchor"));

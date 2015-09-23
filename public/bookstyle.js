@@ -51,8 +51,9 @@ var searchBarStyle = {
 }
 
 var searchCompStyle = {
-	position: "absolute"
-	
+	position: "absolute",
+	top: "40px"
+
 	//topPadding: "60px"
 	// "float": "left"
 }

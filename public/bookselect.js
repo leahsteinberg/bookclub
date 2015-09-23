@@ -67,12 +67,16 @@ var PotentialBooksList = React.createClass({
 		var that = this;
 		var booksList = this.props.possBooks.map(function(book){
 				if (that.props.searchAndPoss[book.attributes.bookId]){
-			return (<div  style={possBooksSearchStyle}> <PossibleBookComp bookInfo={book} onVote={that.props.onVote} username={that.props.username}/> </div>);
+			return (<div key={book.attributes.bookId} style={possBooksSearchStyle}> <PossibleBookComp bookInfo={book} onVote={that.props.onVote} username={that.props.username}/> </div>);
 				} else {
-			return (<div  style={possBooksStyle}> <PossibleBookComp bookInfo={book} onVote={that.props.onVote} username={that.props.username}/> </div>);
+			return (<div key={book.attributes.bookId} style={possBooksStyle}> <PossibleBookComp bookInfo={book} onVote={that.props.onVote} username={that.props.username}/> </div>);
 		}
 		});
-		return (<div style={potentialBooksStyle} >{booksList}</div>)
+		return (<div style={potentialBooksStyle}> 
+			<ReactCSSTransitionGroup transitionName="possBooks"  transitionLeave={false}>
+		{booksList} 
+		</ReactCSSTransitionGroup>
+		</div>)
 		
 	}
 });
@@ -81,7 +85,7 @@ var PotentialBooksList = React.createClass({
 var BooksMenu = React.createClass({
 	getInitialState: function(){
 		return {
-			clubName: "funClub",
+			clubName: "",
 			club: undefined,
 			possBooks: [],
 			searchBooks: [],
@@ -92,7 +96,10 @@ var BooksMenu = React.createClass({
 	},
 	render: function(){
 
-		return (<div style={booksWrapperStyle}><SearchComponent style={searchCompStyle}clubName={this.state.clubName} possBooks={this.state.possBooks} onVote={this.onVote} 
+		return (<div style={booksWrapperStyle}>
+			{currentUser.attributes.username}{"///"}
+			{currentUser.attributes.clubName}
+			<SearchComponent style={searchCompStyle}clubName={this.state.clubName} possBooks={this.state.possBooks} onVote={this.onVote} 
 			handleSearchChange={this.handleSearchChange} searchBooks={this.state.searchBooks}/> 
 				<PotentialBooksList possBooks={this.state.possBooks} onVote={this.onVote} searchAndPoss={this.state.searchAndPoss} username={this.state.username}/>
 			
