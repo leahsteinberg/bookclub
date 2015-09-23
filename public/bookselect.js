@@ -20,11 +20,11 @@ var SearchComponent = React.createClass({
 	render: function(){
 		var that = this;
 		var booksFound = this.props.searchBooks.map(function(book){
-			return (<div key={book.attributes.bookId}><BasicBookComp  bookInfo={book} onVote={that.props.onVote} /></div>);
+			return (<div style={searchCompStyle} key={book.attributes.bookId}><BasicBookComp style={searchBookStyle} bookInfo={book} onVote={that.props.onVote} /></div>);
 
 		});
 		return (<div><SearchInput  onChange={this.props.handleSearchChange}/>
-			<ReactCSSTransitionGroup transitionName="books"  >
+			<ReactCSSTransitionGroup transitionName="searchBooks" style={searchCompStyle}  >
 			{booksFound}
 			</ReactCSSTransitionGroup >
 			</div>)
@@ -87,7 +87,7 @@ var BasicBookComp = React.createClass({
 			<span><img src={this.props.bookInfo.attributes.picUrl}> </img></span>
 			<span style={bookTitleStyle}> {this.props.bookInfo.attributes.title}
 			<div style={bookAuthorStyle}> {this.props.bookInfo.attributes.author}
-			<VoteButton votes={votesList} onVote={this.props.onVote.bind(this, bookId, this.props.bookInfo)} username={this.props.username}/></div></span>
+			<VoteButton votes={votesList} onVote={this.props.onVote.bind(null, this)} username={this.props.username}/></div></span>
 			</div>);
 	}
 });
@@ -111,7 +111,7 @@ var PotentialBooksList = React.createClass({
 		}
 		});
 		return (<div style={potentialBooksStyle}> 
-			<ReactCSSTransitionGroup transitionName="books"  >
+			<ReactCSSTransitionGroup transitionName="possBooks"  >
 		{booksList} 
 		</ReactCSSTransitionGroup>
 		</div>)
@@ -137,7 +137,7 @@ var BooksMenu = React.createClass({
 		return (<div style={booksWrapperStyle}>
 			{currentUser.attributes.username}{"///"}
 			{currentUser.attributes.clubName}
-			<SearchComponent style={searchCompStyle}clubName={this.state.clubName} possBooks={this.state.possBooks} onVote={this.onVote} 
+			<SearchComponent clubName={this.state.clubName} possBooks={this.state.possBooks} onVote={this.onVote} 
 			handleSearchChange={this.handleSearchChange} searchBooks={this.state.searchBooks}/> 
 				<PotentialBooksList possBooks={this.state.possBooks} onVote={this.onVote} searchAndPoss={this.state.searchAndPoss} username={this.state.username}/>
 			
@@ -211,15 +211,15 @@ var BooksMenu = React.createClass({
 		});
 
 	},
-	onVote: function(bookId, bookInfo){
-		var oldVotes = bookInfo.attributes.votes === undefined ? [] : bookInfo.attributes.votes;
+	onVote: function(bookComponent){
+		var oldVotes = bookComponent.props.bookInfo.attributes.votes === undefined ? [] : bookComponent.props.bookInfo.attributes.votes;
 		var newVotes = []
 		if (_.indexOf(oldVotes, this.state.username) >=0){
 			newVotes = _.without(oldVotes, this.state.username);
 		} else {
 			newVotes.push(this.state.username);
 		}
-		updateBookStoreAfterVote(this, newVotes, bookInfo);
+		updateBookStoreAfterVote(this, newVotes, bookComponent.props.bookInfo);
 	}
 });
 

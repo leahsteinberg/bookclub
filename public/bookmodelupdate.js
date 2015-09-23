@@ -45,17 +45,10 @@ var createNewBook = function(clubName, title, author, bookId, picUrl, height, wi
 
 
 var updateBookStoreAfterVote = function(that, newVotes, bookInfo){
-	// var addOn = {}
 	var bookId = bookInfo.attributes.bookId;
-	// addOn[bookId] = newVotes;
-	// var newBookVotes = _.extend(that.state.bookVotes, addOn);
-	// that.setState(newBookVotes);
 
-
-	console.log("saving", bookInfo.attributes.title, bookInfo.attributes.bookId);
 	if (newVotes.length === 0){
 			that.setState({possBooks: _.select(that.state.possBooks, function(book){ return book.attributes.bookId != bookId;}) })
-			console.log("removing", bookInfo);
 			bookInfo.destroy();
 	}else {
 

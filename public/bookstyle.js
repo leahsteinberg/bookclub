@@ -52,12 +52,15 @@ var searchBarStyle = {
 }
 
 var searchCompStyle = {
-	position: "absolute",
+	position: "relative",
 	top: "40px"
 
 	//topPadding: "60px"
 	// "float": "left"
 }
 
+var searchBookStyle = {
+	position: "absolute"
+}
 
 

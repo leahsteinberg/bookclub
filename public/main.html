@@ -14,41 +14,53 @@
   <link href='http://fonts.googleapis.com/css?family=Playfair+Display' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Arvo' rel='stylesheet' type='text/css'>
 <style>
-.books-enter {
+.possBooks-enter {
   opacity: 0.01;
 }
 
-.books-enter.books-enter-active {
+.possBooks-enter.possBooks-enter-active {
+
   opacity: 1;
-  transition: opacity 1s ease-in;
+  transition: opacity .5s ease-in;
 }
-.books-leave {
+.possBooks-leave {
   opacity: 1;
 }
 
-.books-leave.books-leave-active {
+.possBooks-leave.possBooks-leave-active {
   opacity: 0.01;
   transition: opacity .5s ease-in;
 }
 
 
-/*.searchBooks-enter {
-  opacity: 0.01;
+.searchBooks {
+  position: absolute;
+}
+
+.searchBooks-enter {
+  right: 300px;
+
 }
 
 .searchBooks-enter.searchBooks-enter-active {
-  opacity: 1;
-  transition: opacity 3s ease-in;
+    transition:  1s ;
+
+    right: 0px;
+
 }
 .searchBooks-leave {
-  opacity: 1;
+  right: 0px;
 }
 
 .searchBooks-leave.searchBooks-leave-active {
-  opacity: 0.01;
-  transition: opacity 1s ease-in;
+     transition: transform 1s;
+         -moz-transition: 1s ;
+    -webkit-transition: 1s;
+  right: 350px;
+
+ /* transition: opacity .4s ease-in;*/
 }
-*/
+
 </style>
 
   </head>
