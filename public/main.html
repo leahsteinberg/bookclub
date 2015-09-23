@@ -14,23 +14,41 @@
   <link href='http://fonts.googleapis.com/css?family=Playfair+Display' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Arvo' rel='stylesheet' type='text/css'>
 <style>
-.possBooks-enter {
+.books-enter {
   opacity: 0.01;
 }
 
-.possBooks-enter.possBooks-enter-active {
+.books-enter.books-enter-active {
   opacity: 1;
-  transition: opacity 3s ease-in;
+  transition: opacity 1s ease-in;
 }
-.possBooks-leave {
+.books-leave {
   opacity: 1;
 }
 
-.possBooks-leave.possBooks-leave-active {
+.books-leave.books-leave-active {
   opacity: 0.01;
   transition: opacity .5s ease-in;
 }
 
+
+/*.searchBooks-enter {
+  opacity: 0.01;
+}
+
+.searchBooks-enter.searchBooks-enter-active {
+  opacity: 1;
+  transition: opacity 3s ease-in;
+}
+.searchBooks-leave {
+  opacity: 1;
+}
+
+.searchBooks-leave.searchBooks-leave-active {
+  opacity: 0.01;
+  transition: opacity 1s ease-in;
+}
+*/
 </style>
 
   </head>
@@ -50,6 +68,8 @@
 </script>
         <script type="text/jsx">
     var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+        var ReactTransitionGroup = React.addons.TransitionGroup;
+
   var bringToHomePage = function(){
           React.render(
         <div><EntryMenu/></div>, document.getElementById("anchor"));

@@ -24,7 +24,8 @@ var basicBookBoxStyle = {
 	borderStyle: "solid",
 	borderWidth: "2px",	
 	fontFamily: "Playfair Display",
-	borderColor: "transparent transparent #9999cc transparent"
+	borderColor: "transparent transparent #9999cc transparent",
+	 transition: 'opacity .5s'
 }
 
 var bookTitleStyle = {

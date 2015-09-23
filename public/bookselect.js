@@ -16,13 +16,18 @@ var SearchInput = React.createClass({
 
 
 var SearchComponent = React.createClass({
+
 	render: function(){
 		var that = this;
 		var booksFound = this.props.searchBooks.map(function(book){
-			return (<div><BasicBookComp bookInfo={book} onVote={that.props.onVote} /></div>);
+			return (<div key={book.attributes.bookId}><BasicBookComp  bookInfo={book} onVote={that.props.onVote} /></div>);
 
 		});
-		return (<div><SearchInput  onChange={this.props.handleSearchChange}/>{booksFound}</div>)
+		return (<div><SearchInput  onChange={this.props.handleSearchChange}/>
+			<ReactCSSTransitionGroup transitionName="books"  >
+			{booksFound}
+			</ReactCSSTransitionGroup >
+			</div>)
 	}
 });
 
@@ -42,10 +47,43 @@ var VoteButton = React.createClass({
 
 
 var BasicBookComp = React.createClass({
+// componentWillAppear: function (callback) {
+//     console.log('componentWillAppear');
+//     setTimeout(callback, 1); // need at least one tick to fire transition
+//   },
+//   componentDidAppear: function () {
+//     console.log('componentDidAppear');
+//     this._enterStyle();
+//   },
+//   componentWillEnter: function (callback) {
+//     console.log('componentWillEnter');
+//     setTimeout(callback, 1);
+//   },
+//   componentDidEnter: function () {
+//     console.log('componentDidEnter');
+//     this._enterStyle();
+//   },
+//   componentWillLeave: function (callback) {
+//     console.log('componentWillLeave');
+//     this._leaveStyle();
+//     setTimeout(callback, 500); // matches transition duration
+//   },
+//   componentDidLeave: function () {
+//     console.log('componentDidLeave');
+//   },
+//   _enterStyle: function () {
+//     var el = this.refs.item.getDOMNode();
+//     el.style.opacity = 1;
+//   },
+//   _leaveStyle: function () {
+//     var el = this.refs.item.getDOMNode();
+//     el.style.opacity = 0;
+//   },
 	render: function(){
 		var bookId = this.props.bookInfo.attributes.bookId;
 		var votesList = this.props.bookInfo.attributes.votes;// from search its bookVotes, but from potential its votes
-		return (<div style={basicBookBoxStyle}> 
+		return (<div
+		 style={basicBookBoxStyle}> 
 			<span><img src={this.props.bookInfo.attributes.picUrl}> </img></span>
 			<span style={bookTitleStyle}> {this.props.bookInfo.attributes.title}
 			<div style={bookAuthorStyle}> {this.props.bookInfo.attributes.author}
@@ -73,7 +111,7 @@ var PotentialBooksList = React.createClass({
 		}
 		});
 		return (<div style={potentialBooksStyle}> 
-			<ReactCSSTransitionGroup transitionName="possBooks"  transitionLeave={false}>
+			<ReactCSSTransitionGroup transitionName="books"  >
 		{booksList} 
 		</ReactCSSTransitionGroup>
 		</div>)

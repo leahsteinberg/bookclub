@@ -51,18 +51,23 @@ var updateBookStoreAfterVote = function(that, newVotes, bookInfo){
 	// var newBookVotes = _.extend(that.state.bookVotes, addOn);
 	// that.setState(newBookVotes);
 
-	bookInfo.set("votes", newVotes);
-	bookInfo.save();
+
+	console.log("saving", bookInfo.attributes.title, bookInfo.attributes.bookId);
 	if (newVotes.length === 0){
 			that.setState({possBooks: _.select(that.state.possBooks, function(book){ return book.attributes.bookId != bookId;}) })
 			console.log("removing", bookInfo);
 			bookInfo.destroy();
-	}else if (newVotes.length === 1){
+	}else {
+
+		if (newVotes.length === 1){
 				// add to possBooks
 			that.setState({possBooks: [bookInfo].concat(that.state.possBooks)});
 				// remove from search Books
 			that.setState({searchBooks: _.select(that.state.searchBooks, function(book){ return book.attributes.bookId != bookId;}) })
 	}
+		bookInfo.set("votes", newVotes);
+	bookInfo.save();
+}
 }
 
 
