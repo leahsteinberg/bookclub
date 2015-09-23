@@ -10,12 +10,14 @@ var potentialBooksStyle = {
 }
 
 var possBooksSearchStyle = {
-	backgroundColor: "#4f4f4f"
+	backgroundColor: "#4f4f4f",
+	position: "relative"
 }
 
 
 var possBooksStyle = {
-	backgroundColor: "#cccccc"
+	backgroundColor: "#cccccc",
+		position: "relative"
 }
 var basicBookBoxStyle = {
 	paddingBottom: "10px",

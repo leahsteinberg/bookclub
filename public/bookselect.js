@@ -105,9 +105,9 @@ var PotentialBooksList = React.createClass({
 		var that = this;
 		var booksList = this.props.possBooks.map(function(book){
 				if (that.props.searchAndPoss[book.attributes.bookId]){
-			return (<div key={book.attributes.bookId} style={possBooksSearchStyle}> <PossibleBookComp bookInfo={book} onVote={that.props.onVote} username={that.props.username}/> </div>);
+			return (<div key={book.attributes.bookId} style={possBooksSearchStyle}> <PossibleBookComp style={searchBookStyle} bookInfo={book} onVote={that.props.onVote} username={that.props.username}/> </div>);
 				} else {
-			return (<div key={book.attributes.bookId} style={possBooksStyle}> <PossibleBookComp bookInfo={book} onVote={that.props.onVote} username={that.props.username}/> </div>);
+			return (<div key={book.attributes.bookId} style={possBooksStyle}> <PossibleBookComp style={searchBookStyle} bookInfo={book} onVote={that.props.onVote} username={that.props.username}/> </div>);
 		}
 		});
 		return (<div style={potentialBooksStyle}> 
