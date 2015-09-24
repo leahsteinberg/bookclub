@@ -8,7 +8,7 @@ var SearchInput = React.createClass({
 
 	return (<div style={searchBarStyle}>
 		<form> 
-		<input  type ="text"  onChange={this.props.onChange} value={this.props.filter_text}> </input>
+		<input  type ="text"  onChange={this.props.onChange} value={this.props.filter_text} placeholder={"search for books"}> </input>
 		</form>
 		</div>);
 	}
@@ -108,10 +108,7 @@ var BooksMenu = React.createClass({
 
 	},
 	render: function(){
-
 		return (<div style={booksWrapperStyle}>
-			{currentUser.attributes.username}{"///"}
-			{currentUser.attributes.clubName}
 			<SearchComponent clubName={this.state.clubName} possBooks={this.state.possBooks} onVote={this.onVote} 
 			handleSearchChange={this.handleSearchChange} searchBooks={this.state.searchBooks}/> 
 				<PotentialBooksList possBooks={this.state.possBooks} onVote={this.onVote} searchAndPoss={this.state.searchAndPoss} username={this.state.username}/>
@@ -147,6 +144,7 @@ var BooksMenu = React.createClass({
 		});
 	},
 	handleSearchChange: function(e){
+		console.log("handle search change");
 		var searchString = e.target.value;
 		this.setState({searchString: searchString});
 		var rComp = this;
@@ -184,7 +182,6 @@ var BooksMenu = React.createClass({
 			}
 			rComp.setState({searchBooks: searchBooksList, searchAndPoss: topPoss, possBooks: searchAtTopOfPossBooks(rComp.state.possBooks, topPoss)});
 		});
-
 	},
 	onVote: function(bookComponent){
 		var oldVotes = bookComponent.props.bookInfo.attributes.votes === undefined ? [] : bookComponent.props.bookInfo.attributes.votes;

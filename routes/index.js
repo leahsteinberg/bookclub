@@ -1,7 +1,6 @@
 var express = require('express');
 var app = express();
 var secrets = require('../secrets.js');
-console.log("secrets", secrets);
 var path = require('path');
 var amazon = require('amazon-product-api');
 var client = amazon.createClient({
@@ -9,14 +8,11 @@ var client = amazon.createClient({
     awsSecret: secrets.awsSecret,
     awsTag: secrets.awsAssociateTag
   });
-console.log(secrets.awsId, secrets.awsSecret, secrets.awsAssociateTag);
-
-var server = app.listen(4004, function() {
+var server = app.listen(4004, function(){
 	var host = server.address().address;
 	var port = server.address().port;
 	console.log("BookClub App listening at http://%s:%s ~~~", host, port);
 });
-
 app.use("/public", express.static(path.resolve('../public')));
 
 app.get('/', function(req, res) {
