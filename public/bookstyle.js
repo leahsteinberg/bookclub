@@ -10,35 +10,41 @@ var potentialBooksStyle = {
 }
 
 var possBooksSearchStyle = {
-	backgroundColor: "#4f4f4f",
 	position: "relative"
 }
 
 
 var possBooksStyle = {
-	backgroundColor: "#cccccc",
 		position: "relative"
 }
+
+
+var bookInfoWrapperStyle ={
+position: "relative"
+}
 var basicBookBoxStyle = {
+	//position: "absolute",
+
 	paddingBottom: "10px",
-	maginTop: "5px",
+	paddingTop: "10px",
+	//marginTop: "5px",
+	marginTop: "15px",
 	width: "300px",
 	borderStyle: "solid",
 	borderWidth: "2px",	
 	fontFamily: "Playfair Display",
-	borderColor: "transparent transparent #9999cc transparent",
-	 transition: 'opacity .5s'
+	borderColor: "transparent transparent #98FB98 transparent",
 }
 
 var bookTitleStyle = {
-	fontSize: 16
+	fontSize: 16,
+	height: "44px"
 
 
 }
 
 var bookAuthorStyle = {
 	fontFamily: "Arvo",
-	color: "#849a9a",
 	fontSize: 12,
 	rightMargin: "10px"
 
@@ -65,4 +71,13 @@ var searchBookStyle = {
 	position: "absolute"
 }
 
+
+var bookInfoStyle = {
+	position: "absolute",
+	left: "60px",
+	top: "-65px",
+	width: "200px",
+	height: "100px",
+	fontSize: 16
+}
 
